@@ -41,5 +41,22 @@ function pressNumber(digit) {
     typedNumberText = typedNumberText + digit;
   }
 
-  updateScreen();
+ 
+}
+
+function pressOperator(operator) {
+  setStatus("");
+
+  if (typedNumberText === "" && storedNumber === null) {
+    setStatus("Type a Number First");
+  }
+
+  if (storedNumber === null) {
+    storedNumber = Number(typedNumberText);
+    currentOperator = operator
+    historyParts = [String(storedNumber), currentOperator]
+    typedNumberText = '';
+  
+   updateScreen();
+  }
 }
