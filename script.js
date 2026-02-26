@@ -1,28 +1,29 @@
-// what the user is currently typing ( as text)
+// What the user is currently typing (as text)
 let typedNumberText = "";
 
-// the number we store for calculations
+// The number we store for calculations
 let storedNumber = null;
 
-// the operator currently selected ( + - * /)
+// The operator currently selected (+ - * /)
 let currentOperator = "";
 
-// used only for displaying the history
+// Used only for displaying the history line
+// Example: ["3", "+", "4"]
 let historyParts = [];
 
-//------------------
-// helper function
-//------------------
+//------------------------
+//HELPER FUCNTIONS
+//------------------------
 
 function setStatus(message) {
   document.getElementById("statusLine").textContent = message;
 }
 
-function showSymbol(operator) {
-  if (operator === "*") return "X";
-  if (operator === "/") return "&#x00F7";
-  if (operator === "-") return "&#x2212";
-  return operator;
+function showSymbol(op) {
+  if (op === "*") return "×";
+  if (op === "/") return "÷";
+  if (op === "-") return "−";
+  return op;
 }
 
 function updateScreen() {
@@ -30,7 +31,30 @@ function updateScreen() {
   const history = document.getElementById("historyLine");
   const status = document.getElementById("statusLine");
 
-  display.textContent = typedNumberText;
+  if (typedNumberText !== "") {
+    display.textContent = typedNumberText;
+  } else {
+    display.textContent = "0";
+  }
+
+  if (historyParts.length === 0) {
+    history.textContent = "";
+  }
+  if (historyParts.length === 1) {
+    history.textContent = historyParts[0];
+  }
+  if (historyParts.length === 2) {
+    history.textContent = historyParts[0] + " " + showSymbol(historyParts[1]);
+  }
+  if (historyParts.length === 3) {
+    history.textContent =
+      historyParts[0] +
+      " " +
+      showSymbol(historyParts[1]) +
+      " " +
+      historyParts[2];
+  }
+  if (status.textContent ==='') status.textContent = 'Ready'
 }
 
 function pressNumber(digit) {
@@ -40,23 +64,45 @@ function pressNumber(digit) {
   } else {
     typedNumberText = typedNumberText + digit;
   }
-
- 
+  updateScreen();
 }
 
-function pressOperator(operator) {
-  setStatus("");
+function pressOperator(op) {
+  setStatus('');
+
+
 
   if (typedNumberText === "" && storedNumber === null) {
-    setStatus("Type a Number First");
+    setStatus("Type a number first.");
+    updateScreen();
   }
 
   if (storedNumber === null) {
     storedNumber = Number(typedNumberText);
-    currentOperator = operator
-    historyParts = [String(storedNumber), currentOperator]
-    typedNumberText = '';
-  
-   updateScreen();
+    currentOperator = op;
+    historyParts = [String(storedNumber), currentOperator];
+    typedNumberText = "";
+    updateScreen();
   }
+
+if (typedNumberText !== ''){
+  const secondNumber = typedNumberText
+
+if (currentOperator === '/' && secondNumber === 0){
+  setStatus ('You are a DUMBASS')
+updateScreen()
+}
+}
+
+
+}
+
+function clearAll (){
+  typedNumberText = ''
+  storedNumber = null
+  currentOperator = ''
+  historyParts = []
+
+  setStatus ('Cleared.')
+  updateScreen()
 }
